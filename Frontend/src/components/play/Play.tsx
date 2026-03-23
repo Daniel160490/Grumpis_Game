@@ -221,36 +221,58 @@ const Play: React.FC = () => {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#020617_70%)] opacity-40" />
 
       {/* --- PANTALLA VERSUS (VS) --- */}
-      {gameState === 'versus' && (
+{gameState === 'versus' && (
         <div className="fixed inset-0 z-[100] bg-black flex items-center justify-center p-4">
-           {/* Fondo dinámico */}
-           <div className="absolute inset-0 bg-gradient-to-br from-orange-900/20 via-black to-emerald-900/20" />
-           
-           <div className="relative flex items-center justify-between w-full max-w-5xl">
-                {/* Lado Jugador */}
+            {/* Fondo dinámico */}
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/20 via-black to-orange-900/20" />
+            
+            <div className="relative flex flex-col md:flex-row items-center justify-around w-full max-w-6xl gap-12">
+                
+                {/* LADO JUGADOR */}
                 <div className="flex flex-col items-center animate-in slide-in-from-left-20 duration-1000">
-                    <div className="w-48 h-64 border-4 border-emerald-500 rounded-3xl overflow-hidden shadow-[0_0_30px_rgba(16,185,129,0.5)]">
-                        <img src={playerTeam[0].img_general} className="w-full h-full object-cover" alt="player leader" />
+                    <div className="relative w-48 h-64 sm:w-56 sm:h-72 border-4 border-emerald-500 rounded-[2rem] overflow-hidden shadow-[0_0_50px_rgba(16,185,129,0.4)] bg-slate-900">
+                        <img 
+                          src={playerTeam[0].img_general} 
+                          // CORRECCIÓN: object-center asegura que el Grumpi esté en medio
+                          className="w-full h-full object-cover object-center" 
+                          alt="player leader" 
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                     </div>
-                    <h3 className="mt-4 text-2xl font-black italic uppercase text-emerald-400 tracking-widest">{playerTeam[0].nombre}</h3>
-                    <p className="text-slate-500 font-bold uppercase text-[10px] tracking-[0.4em]">Entrenador Local</p>
+                    <div className="text-center mt-6">
+                      <h3 className="text-3xl font-black italic uppercase text-emerald-400 tracking-tighter drop-shadow-md">
+                        {playerTeam[0].nombre}
+                      </h3>
+                      <p className="text-slate-500 font-black uppercase text-[10px] tracking-[0.4em] mt-1">Entrenador Local</p>
+                    </div>
                 </div>
 
                 {/* VS CENTRAL */}
                 <div className="flex flex-col items-center animate-in zoom-in spin-in-12 duration-700 delay-500">
-                    <span className="text-8xl font-black italic text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.4)]">VS</span>
-                    <div className="w-full h-1 bg-gradient-to-r from-emerald-500 via-white to-orange-500 mt-2" />
+                    <span className="text-7xl md:text-9xl font-black italic text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.3)] select-none">VS</span>
+                    <div className="w-32 md:w-48 h-1.5 bg-gradient-to-r from-emerald-500 via-white to-orange-500 mt-4 rounded-full shadow-lg" />
                 </div>
 
-                {/* Lado Rival */}
+                {/* LADO RIVAL */}
                 <div className="flex flex-col items-center animate-in slide-in-from-right-20 duration-1000">
-                    <div className="w-48 h-64 border-4 border-orange-600 rounded-3xl overflow-hidden shadow-[0_0_30px_rgba(234,88,12,0.5)]">
-                        <img src={enemyTeam[0].img_general} className="w-full h-full object-cover" alt="enemy leader" />
+                    <div className="relative w-48 h-64 sm:w-56 sm:h-72 border-4 border-orange-600 rounded-[2rem] overflow-hidden shadow-[0_0_50px_rgba(234,88,12,0.4)] bg-slate-900">
+                        <img 
+                          src={enemyTeam[0].img_general} 
+                          // CORRECCIÓN: object-center para centrado perfecto
+                          className="w-full h-full object-cover object-center" 
+                          alt="enemy leader" 
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                     </div>
-                    <h3 className="mt-4 text-2xl font-black italic uppercase text-orange-500 tracking-widest">{enemyTeam[0].nombre}</h3>
-                    <p className="text-slate-500 font-bold uppercase text-[10px] tracking-[0.4em]">IA Adversaria</p>
+                    <div className="text-center mt-6">
+                      <h3 className="text-3xl font-black italic uppercase text-orange-500 tracking-tighter drop-shadow-md">
+                        {enemyTeam[0].nombre}
+                      </h3>
+                      <p className="text-slate-500 font-black uppercase text-[10px] tracking-[0.4em] mt-1">IA Adversaria</p>
+                    </div>
                 </div>
-           </div>
+
+            </div>
         </div>
       )}
 
