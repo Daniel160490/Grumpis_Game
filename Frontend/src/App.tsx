@@ -8,8 +8,9 @@ import Profile from './components/profile/Profile';
 import Settings from './components/settings/Settings';
 import Login from './components/login/Login';
 import { pedometer } from './services/PodometerService';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Instructions from './components/instructions/Instructions';
+import backgroundMusic from './assets/audio/Grumpi.mp3';
 
 // Componente Portero (ProtectedRoute)
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -24,6 +25,8 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 function App() {
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
   useEffect(() => {
     if (typeof (DeviceMotionEvent as any).requestPermission === 'function') {
       (DeviceMotionEvent as any).requestPermission()
@@ -34,6 +37,47 @@ function App() {
       pedometer.start();
     }
   }, []);
+
+  useEffect(() => {
+    // Inicializar el audio si no existe
+    if (!audioRef.current) {
+      audioRef.current = new Audio(backgroundMusic);
+      audioRef.current.loop = true;
+    }
+
+    const updateAudio = () => {
+      const isEnabled = localStorage.getItem('grumpi_music_enabled') !== 'false';
+      const volume = parseInt(localStorage.getItem('grumpi_music_vol') || '70');
+
+      if (audioRef.current) {
+        audioRef.current.volume = volume / 100;
+        if (isEnabled) {
+          // El navegador requiere una interacción previa para el play()
+          audioRef.current.play().catch(() => {
+            console.log("Esperando interacción para iniciar música...");
+          });
+        } else {
+          audioRef.current.pause();
+        }
+      }
+    };
+
+    // Actualizar audio al cargar
+    updateAudio();
+
+    // Escuchar cambios desde otras pestañas o componentes (como Settings)
+    window.addEventListener('storage', updateAudio);
+
+    // También podemos usar un pequeño intervalo para detectar cambios locales 
+    // de localStorage si no usamos Context API
+    const interval = setInterval(updateAudio, 500);
+
+    return () => {
+      window.removeEventListener('storage', updateAudio);
+      clearInterval(interval);
+    };
+  }, []);
+
 
   return (
     // Quitamos el <BrowserRouter> de aquí porque ya está en main.tsx

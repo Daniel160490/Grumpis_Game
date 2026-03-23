@@ -27,14 +27,27 @@ const Settings: React.FC = () => {
   const navigate = useNavigate();
   const username = localStorage.getItem('grumpi_user');
 
-  // --- ESTADOS ---
-  const [musicVol, setMusicVol] = useState(70);
-  const [fastMode, setFastMode] = useState(false);
+  // --- ESTADOS DE AUDIO (Persistentes) ---
+  const [musicVol, setMusicVol] = useState(() => {
+    return parseInt(localStorage.getItem('grumpi_music_vol') || '70');
+  });
+  const [isMusicEnabled, setIsMusicEnabled] = useState(() => {
+    return localStorage.getItem('grumpi_music_enabled') !== 'false';
+  });
+
+  // --- ESTADOS DE DATOS Y SOBRES ---
   const [profile, setProfile] = useState<any>(null);
   const [openingPack, setOpeningPack] = useState(false);
   const [revealedCard, setRevealedCard] = useState<Grumpi | null>(null);
   const [canOpenToday, setCanOpenToday] = useState(false);
   const [timeLeft, setTimeLeft] = useState("");
+
+  // --- EFECTO PARA GUARDAR AJUSTES DE AUDIO ---
+  // Al cambiar estos estados, App.tsx detectará el cambio en localStorage y ajustará el audio global
+  useEffect(() => {
+    localStorage.setItem('grumpi_music_vol', musicVol.toString());
+    localStorage.setItem('grumpi_music_enabled', isMusicEnabled.toString());
+  }, [musicVol, isMusicEnabled]);
 
   useEffect(() => {
     fetchData();
@@ -58,7 +71,7 @@ const Settings: React.FC = () => {
     }
 
     const lastOpen = new Date(lastPackDate).getTime();
-    const nextAvailable = lastOpen + (24 * 60 * 60 * 1000); // 24h exactas
+    const nextAvailable = lastOpen + (24 * 60 * 60 * 1000);
     const now = new Date().getTime();
 
     if (now >= nextAvailable) {
@@ -152,16 +165,29 @@ const Settings: React.FC = () => {
         </div>
 
         <div className="p-8 space-y-6 max-h-[55vh] overflow-y-auto custom-scrollbar">
+
+          {/* SECCIÓN AUDIO */}
           <div className="space-y-1">
-            <SettingRow label="Música" description="Volumen del sistema">
-              <input type="range" value={musicVol} onChange={(e) => setMusicVol(parseInt(e.target.value))} className="w-24 accent-orange-500" />
-            </SettingRow>
-            {/* <SettingRow label="Modo Rápido" description="Menos esperas">
-              <button onClick={() => setFastMode(!fastMode)} className={`w-12 h-6 rounded-full border-2 transition-all relative ${fastMode ? 'bg-orange-600 border-orange-700' : 'bg-slate-700 border-slate-800'}`}>
-                <div className={`absolute top-0.5 w-4 h-4 bg-white rounded-full transition-all ${fastMode ? 'left-6.5' : 'left-0.5'}`} />
+            <SettingRow label="Música" description={isMusicEnabled ? "En reproducción" : "Silenciado"}>
+              <button
+                onClick={() => setIsMusicEnabled(!isMusicEnabled)}
+                className={`w-12 h-6 rounded-full border-2 transition-all relative ${isMusicEnabled ? 'bg-orange-600 border-orange-700' : 'bg-slate-700 border-slate-800'}`}
+              >
+                <div className={`absolute top-0.5 w-4 h-4 bg-white rounded-full transition-all ${isMusicEnabled ? 'left-6' : 'left-0.5'}`} />
               </button>
-            </SettingRow> */}
-            <SettingRow label='Instrucciones' description='Instrucciones de la aplicación'>
+            </SettingRow>
+
+            <SettingRow label="Volumen" description={`${musicVol}%`}>
+              <input
+                type="range"
+                min="0" max="100"
+                value={musicVol}
+                onChange={(e) => setMusicVol(parseInt(e.target.value))}
+                className="w-24 accent-orange-500 cursor-pointer"
+              />
+            </SettingRow>
+
+            <SettingRow label='Instrucciones' description='Manual de supervivencia'>
               <button onClick={() => navigate('/instructions')}
                 className="bg-slate-800 hover:bg-orange-600 text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase transition-all active:scale-95 border border-slate-700 hover:border-orange-400 shadow-lg">Ver</button>
             </SettingRow>
@@ -224,10 +250,10 @@ const Settings: React.FC = () => {
       <Footer />
 
       <style>{`
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(249, 115, 22, 0.2); border-radius: 10px; }
-        @keyframes shimmer { 100% { transform: translateX(100%); } }
-      `}</style>
+                .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+                .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(249, 115, 22, 0.2); border-radius: 10px; }
+                @keyframes shimmer { 100% { transform: translateX(100%); } }
+            `}</style>
     </div>
   );
 };

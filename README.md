@@ -1,4 +1,4 @@
-# 🛡️ Grumpi: The Game (v2.0.26-STABLE)
+# 🛡️ Grumpi: The Game (v1.0-STABLE)
 
 ### **Grumpi Network Protocol • Trading Card Game (TCG) & Move-to-Earn**
 

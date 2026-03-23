@@ -1,15 +1,20 @@
-from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 import schemas 
 from database import engine, get_db, Base
 from services import userServices
 from models.user import User
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+origins = [
+    "http://localhost:5173",    # El puerto por defecto de Vite
+    "http://127.0.0.1:5173",
+    # Cuando lo subas a Vercel, deberás añadir aquí la URL de tu frontend
+]
 
 # CONFIGURACIÓN DE CORS
 app.add_middleware(
@@ -99,3 +104,28 @@ def update_steps(data: dict, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(user)
     return {"status": "updated", "total_steps": user.total_steps, "xp": user.xp}
+
+# ENDPOINT DE ESTADÍSTICAS DE COMBATE
+@app.post("/update-battle-stats/{username}")
+async def update_battle_stats(username: str, result: str, db: Session = Depends(get_db)):
+    # Usamos User directamente porque ya está importado arriba
+    user = db.query(User).filter(User.username == username).first()
+    
+    if not user:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    
+    if result == "win":
+        user.battles_won += 1
+        user.xp += 100 
+    else:
+        user.battles_lost += 1
+        user.xp += 20 
+        
+    # Lógica de nivel
+    xp_target = user.level * 1000
+    if user.xp >= xp_target:
+        user.level += 1
+        user.xp -= xp_target
+
+    db.commit()
+    return {"status": "updated", "new_level": user.level}

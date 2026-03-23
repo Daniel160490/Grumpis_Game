@@ -74,4 +74,11 @@ export const api = {
 
         return await response.json();
     },
+
+    async updateBattleStats(username: string, result: 'win' | 'loss') {
+        const response = await fetch(`${API_URL}/update-battle-stats/${username}?result=${result}`, {
+            method: 'POST',
+        });
+        return response.json();
+    },
 };
