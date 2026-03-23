@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../footer/Footer';
 import { api } from '../../services/api';
+import imagenLogin from '../../assets/Portada Juego Grumpi.png'
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
-  
+
   const [formData, setFormData] = useState({
     username: '',
     password: ''
   });
-  
+
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -30,14 +31,14 @@ const Login: React.FC = () => {
 
       // Guardamos la sesión (Username y Favorito si lo tiene)
       localStorage.setItem('grumpi_user', userData.username);
-      
+
       if (userData.favorite_grumpi_id) {
         localStorage.setItem('grumpi_favorito', String(userData.favorite_grumpi_id));
       }
 
       setIsLoading(false);
-      navigate('/'); // Navegamos al Home
-      
+      navigate('/');
+
     } catch (err: any) {
       setIsLoading(false);
       setError(err.message);
@@ -47,28 +48,33 @@ const Login: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-6 relative overflow-hidden font-sans select-none">
-      
+
       {/* Fondo decorativo */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#020617_70%)] opacity-40" />
-      
+
       {/* --- PANEL DE ACCESO --- */}
       <div className="relative z-10 w-full max-w-md bg-slate-900/90 backdrop-blur-2xl border-2 border-slate-800 rounded-[2.5rem] shadow-2xl overflow-hidden animate-in fade-in slide-in-from-top-8 duration-500">
-        
+
         {/* Cabecera de autenticación */}
         <div className="p-10 bg-gradient-to-b from-slate-800/50 to-transparent border-b border-slate-700 text-center">
-          <div className="w-20 h-20 bg-slate-950 rounded-2xl border-2 border-orange-500 mx-auto flex items-center justify-center text-4xl mb-4 shadow-[0_0_20px_rgba(234,88,12,0.3)]">
-            🔑
+          <div className="w-24 h-24 bg-slate-950 rounded-2xl border-2 border-orange-500 mx-auto flex items-center justify-center p-2 shadow-[0_0_25px_rgba(234,88,12,0.4)] relative group overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-orange-500/10 to-transparent h-1/2 w-full animate-scan pointer-events-none" />
+            <img
+              src={imagenLogin}
+              alt="Grumpi Logo"
+              className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]"
+            />
           </div>
           <h1 className="text-3xl font-black italic uppercase text-white tracking-tighter">Inicio de sesión</h1>
           <p className="text-[10px] text-orange-500 font-black uppercase tracking-[0.3em] mt-1">Grumpi Identification System</p>
         </div>
 
         <form onSubmit={handleLogin} className="p-10 space-y-6">
-          
+
           {/* Usuario */}
           <div className="space-y-2">
             <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">ID Entrenador</label>
-            <input 
+            <input
               type="text"
               name="username"
               required
@@ -82,7 +88,7 @@ const Login: React.FC = () => {
           {/* Contraseña */}
           <div className="space-y-2">
             <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Contraseña</label>
-            <input 
+            <input
               type="password"
               name="password"
               required
@@ -101,7 +107,7 @@ const Login: React.FC = () => {
           )}
 
           {/* Botón de Entrada */}
-          <button 
+          <button
             type="submit"
             disabled={isLoading}
             className={`w-full py-5 rounded-2xl font-black text-lg transition-all active:scale-95 shadow-xl flex items-center justify-center gap-3

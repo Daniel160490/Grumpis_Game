@@ -16,8 +16,8 @@
 - **Move-to-Earn (Pedometer Integration):** Desbloquea diferentes tipos de sobres (Bronce, Solaris) según tu actividad física diaria.
 - **Gestión de Biblioteca:** Colecciona hasta 160 Grumpis únicos con estadísticas personalizadas (PS, ataques, tipos).
 - **Grumpi Compañero:** Selecciona a tu carta favorita para que te acompañe y se muestre en tu perfil global de entrenador.
-- **Seguridad de Nivel Militar:** Autenticación de usuarios mediante hash de contraseñas (Bcrypt) y persistencia en base de datos relacional.
-- **UI/UX Cyberpunk:** Interfaz optimizada para móviles con efectos de desenfoque de fondo (Glassmorphism) y animaciones fluidas.
+- **Seguridad:** Autenticación de usuarios mediante hash de contraseñas (Bcrypt) y persistencia en base de datos relacional.
+- **UI/UX:** Interfaz optimizada para móviles con efectos de desenfoque de fondo (Glassmorphism) y animaciones fluidas.
 
 ---
 

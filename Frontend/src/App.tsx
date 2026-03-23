@@ -9,11 +9,12 @@ import Settings from './components/settings/Settings';
 import Login from './components/login/Login';
 import { pedometer } from './services/PodometerService';
 import { useEffect } from 'react';
+import Instructions from './components/instructions/Instructions';
 
 // Componente Portero (ProtectedRoute)
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const user = localStorage.getItem('grumpi_user');
-  
+
   // Si no hay usuario en el sistema, mandamos al LOGIN
   if (!user) {
     return <Navigate to="/login" replace />;
@@ -33,14 +34,14 @@ function App() {
       pedometer.start();
     }
   }, []);
-  
+
   return (
     // Quitamos el <BrowserRouter> de aquí porque ya está en main.tsx
     <Routes>
       {/* --- RUTA PÚBLICA --- */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-  
+
 
       {/* --- RUTAS PROTEGIDAS --- */}
       <Route path="/" element={
@@ -76,6 +77,12 @@ function App() {
       <Route path="/play" element={
         <ProtectedRoute>
           <Play />
+        </ProtectedRoute>
+      } />
+
+      <Route path="/instructions" element={
+        <ProtectedRoute>
+          <Instructions />
         </ProtectedRoute>
       } />
 

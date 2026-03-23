@@ -72,7 +72,7 @@ const Play: React.FC = () => {
     }
 
     const eTeam = [getRandomGrumpi(), getRandomGrumpi(), getRandomGrumpi()];
-    
+
     setPlayerTeam(pTeam);
     setEnemyTeam(eTeam);
     setPlayerHPs(pTeam.map(g => g.PS));
@@ -81,7 +81,7 @@ const Play: React.FC = () => {
 
     // Quitar pantalla de versus tras 3.5 segundos
     const vsTimer = setTimeout(() => {
-        setGameState('playing');
+      setGameState('playing');
     }, 3500);
 
     return () => clearTimeout(vsTimer);
@@ -158,7 +158,7 @@ const Play: React.FC = () => {
       setPlayerHPs(newPlayerHPs);
 
       if (status !== 'ninguno' && newEnemyHPs[enemyIdx] > 0) setEnemyEffects(status);
-      
+
       setLog(`¡${playerTeam[playerIdx].nombre} usó ${name}! ${heal > 0 ? '¡Se curó!' : ''}`);
       if (newEnemyHPs[enemyIdx] === 0) manejarDerrota('enemy');
       else setTurn('enemy');
@@ -221,58 +221,56 @@ const Play: React.FC = () => {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#020617_70%)] opacity-40" />
 
       {/* --- PANTALLA VERSUS (VS) --- */}
-{gameState === 'versus' && (
+      {gameState === 'versus' && (
         <div className="fixed inset-0 z-[100] bg-black flex items-center justify-center p-4">
-            {/* Fondo dinámico */}
-            <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/20 via-black to-orange-900/20" />
-            
-            <div className="relative flex flex-col md:flex-row items-center justify-around w-full max-w-6xl gap-12">
-                
-                {/* LADO JUGADOR */}
-                <div className="flex flex-col items-center animate-in slide-in-from-left-20 duration-1000">
-                    <div className="relative w-48 h-64 sm:w-56 sm:h-72 border-4 border-emerald-500 rounded-[2rem] overflow-hidden shadow-[0_0_50px_rgba(16,185,129,0.4)] bg-slate-900">
-                        <img 
-                          src={playerTeam[0].img_general} 
-                          // CORRECCIÓN: object-center asegura que el Grumpi esté en medio
-                          className="w-full h-full object-cover object-center" 
-                          alt="player leader" 
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    </div>
-                    <div className="text-center mt-6">
-                      <h3 className="text-3xl font-black italic uppercase text-emerald-400 tracking-tighter drop-shadow-md">
-                        {playerTeam[0].nombre}
-                      </h3>
-                      <p className="text-slate-500 font-black uppercase text-[10px] tracking-[0.4em] mt-1">Entrenador Local</p>
-                    </div>
-                </div>
+          {/* Fondo dinámico */}
+          <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/20 via-black to-orange-900/20" />
 
-                {/* VS CENTRAL */}
-                <div className="flex flex-col items-center animate-in zoom-in spin-in-12 duration-700 delay-500">
-                    <span className="text-7xl md:text-9xl font-black italic text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.3)] select-none">VS</span>
-                    <div className="w-32 md:w-48 h-1.5 bg-gradient-to-r from-emerald-500 via-white to-orange-500 mt-4 rounded-full shadow-lg" />
-                </div>
+          <div className="relative flex flex-col md:flex-row items-center justify-around w-full max-w-6xl gap-12">
 
-                {/* LADO RIVAL */}
-                <div className="flex flex-col items-center animate-in slide-in-from-right-20 duration-1000">
-                    <div className="relative w-48 h-64 sm:w-56 sm:h-72 border-4 border-orange-600 rounded-[2rem] overflow-hidden shadow-[0_0_50px_rgba(234,88,12,0.4)] bg-slate-900">
-                        <img 
-                          src={enemyTeam[0].img_general} 
-                          // CORRECCIÓN: object-center para centrado perfecto
-                          className="w-full h-full object-cover object-center" 
-                          alt="enemy leader" 
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    </div>
-                    <div className="text-center mt-6">
-                      <h3 className="text-3xl font-black italic uppercase text-orange-500 tracking-tighter drop-shadow-md">
-                        {enemyTeam[0].nombre}
-                      </h3>
-                      <p className="text-slate-500 font-black uppercase text-[10px] tracking-[0.4em] mt-1">IA Adversaria</p>
-                    </div>
-                </div>
-
+            {/* LADO JUGADOR */}
+            <div className="flex flex-col items-center animate-in slide-in-from-left-20 duration-1000">
+              <div className="relative w-48 h-64 sm:w-56 sm:h-72 border-4 border-emerald-500 rounded-[2rem] overflow-hidden shadow-[0_0_50px_rgba(16,185,129,0.4)] bg-slate-900">
+                <img
+                  src={playerTeam[0].img_general}
+                  className="w-full h-full object-cover object-center"
+                  alt="player leader"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              </div>
+              <div className="text-center mt-6">
+                <h3 className="text-3xl font-black italic uppercase text-emerald-400 tracking-tighter drop-shadow-md">
+                  {playerTeam[0].nombre}
+                </h3>
+                <p className="text-slate-500 font-black uppercase text-[10px] tracking-[0.4em] mt-1">Entrenador Local</p>
+              </div>
             </div>
+
+            {/* VS CENTRAL */}
+            <div className="flex flex-col items-center animate-in zoom-in spin-in-12 duration-700 delay-500">
+              <span className="text-7xl md:text-9xl font-black italic text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.3)] select-none">VS</span>
+              <div className="w-32 md:w-48 h-1.5 bg-gradient-to-r from-emerald-500 via-white to-orange-500 mt-4 rounded-full shadow-lg" />
+            </div>
+
+            {/* LADO RIVAL */}
+            <div className="flex flex-col items-center animate-in slide-in-from-right-20 duration-1000">
+              <div className="relative w-48 h-64 sm:w-56 sm:h-72 border-4 border-orange-600 rounded-[2rem] overflow-hidden shadow-[0_0_50px_rgba(234,88,12,0.4)] bg-slate-900">
+                <img
+                  src={enemyTeam[0].img_general}
+                  className="w-full h-full object-cover object-center"
+                  alt="enemy leader"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              </div>
+              <div className="text-center mt-6">
+                <h3 className="text-3xl font-black italic uppercase text-orange-500 tracking-tighter drop-shadow-md">
+                  {enemyTeam[0].nombre}
+                </h3>
+                <p className="text-slate-500 font-black uppercase text-[10px] tracking-[0.4em] mt-1">IA Adversaria</p>
+              </div>
+            </div>
+
+          </div>
         </div>
       )}
 
@@ -282,10 +280,10 @@ const Play: React.FC = () => {
           <div className="bg-slate-900 border-4 border-orange-500 p-8 rounded-[2rem] text-center shadow-2xl">
             <h2 className="text-2xl font-black mb-6 text-orange-500 italic uppercase">Lanzando Moneda</h2>
             <div className="w-32 h-32 mx-auto relative mb-8 flex items-center justify-center">
-              <img 
-                src={coinFlip.result === 'cruz' ? '/MONEDA_GRUMPI_CRUZ.png' : '/MONEDA_GRUMPI_CARA.png'} 
-                className={`w-full h-full object-contain ${coinFlip.result === undefined ? 'animate-spin' : 'animate-bounce'}`} 
-                alt="coin" 
+              <img
+                src={coinFlip.result === 'cruz' ? '/MONEDA_GRUMPI_CRUZ.png' : '/MONEDA_GRUMPI_CARA.png'}
+                className={`w-full h-full object-contain ${coinFlip.result === undefined ? 'animate-spin' : 'animate-bounce'}`}
+                alt="coin"
               />
             </div>
             <p className="text-slate-400 font-mono text-xs tracking-widest uppercase italic">
@@ -319,13 +317,13 @@ const Play: React.FC = () => {
 
       {/* --- CAMPO DE BATALLA --- */}
       <div className="relative z-10 w-full max-w-5xl mx-auto flex flex-col flex-1 justify-between py-10">
-        
+
         {/* ENEMIGO */}
         <div className="flex justify-center items-start gap-4">
           <div className={`flex-1 max-w-sm bg-slate-900/60 p-4 rounded-2xl border ${enemyEffects !== 'ninguno' ? 'border-amber-500 bg-amber-950/20 shadow-[0_0_15px_rgba(245,158,11,0.2)]' : 'border-slate-800'}`}>
             <div className="flex justify-between text-[10px] font-bold text-slate-400 mb-1 uppercase tracking-tighter">
-                <span>{enemyTeam[enemyIdx].nombre} {enemyEffects !== 'ninguno' && <span className="text-amber-500">[{enemyEffects}]</span>}</span>
-                <span>RIVAL {enemyIdx + 1}/3</span>
+              <span>{enemyTeam[enemyIdx].nombre} {enemyEffects !== 'ninguno' && <span className="text-amber-500">[{enemyEffects}]</span>}</span>
+              <span>RIVAL {enemyIdx + 1}/3</span>
             </div>
             <HealthBar current={enemyHPs[enemyIdx]} max={enemyTeam[enemyIdx].PS} />
           </div>
@@ -334,7 +332,7 @@ const Play: React.FC = () => {
               <img src={enemyTeam[enemyIdx].img_general} className="w-full h-full object-cover" alt="enemy" />
               {enemyEffects !== 'ninguno' && (
                 <div className="absolute inset-0 bg-amber-900/40 backdrop-blur-[1px] flex items-center justify-center">
-                   <img src="/MONEDA_GRUMPI_CARA.png" className="w-12 h-12 opacity-80 animate-pulse" alt="paralyzed" />
+                  <img src="/MONEDA_GRUMPI_CARA.png" className="w-12 h-12 opacity-80 animate-pulse" alt="paralyzed" />
                 </div>
               )}
             </div>
@@ -358,17 +356,17 @@ const Play: React.FC = () => {
           </div>
           <div className={`flex-1 max-w-sm bg-slate-900/90 p-5 rounded-3xl border-2 shadow-2xl transition-all ${playerEffects !== 'ninguno' ? 'border-amber-500 bg-amber-950/40' : 'border-slate-800'}`}>
             <div className="flex justify-between text-orange-500 text-[11px] font-bold mb-2 uppercase tracking-tighter">
-                <span>{playerTeam[playerIdx].nombre} {playerEffects !== 'ninguno' && <span className="text-amber-400">[{playerEffects}]</span>}</span>
-                <span>{playerIdx + 1}/3</span>
+              <span>{playerTeam[playerIdx].nombre} {playerEffects !== 'ninguno' && <span className="text-amber-400">[{playerEffects}]</span>}</span>
+              <span>{playerIdx + 1}/3</span>
             </div>
             <HealthBar current={playerHPs[playerIdx]} max={playerTeam[playerIdx].PS} />
             <div className="grid grid-cols-2 gap-2 mt-4">
               {playerTeam[playerIdx].ataques.map((atk, i) => (
-                <button 
-                    key={i} 
-                    disabled={turn !== 'player' || gameState !== 'playing' || coinFlip.show || playerEffects !== 'ninguno'}
-                    onClick={() => ejecutarAtaque(atk, 'player')}
-                    className="bg-slate-800 p-2 rounded-xl text-[10px] font-bold border border-slate-700 hover:border-orange-500 disabled:opacity-50 transition-all text-left leading-tight"
+                <button
+                  key={i}
+                  disabled={turn !== 'player' || gameState !== 'playing' || coinFlip.show || playerEffects !== 'ninguno'}
+                  onClick={() => ejecutarAtaque(atk, 'player')}
+                  className="bg-slate-800 p-2 rounded-xl text-[10px] font-bold border border-slate-700 hover:border-orange-500 disabled:opacity-50 transition-all text-left leading-tight"
                 >
                   <div className="uppercase mb-1">{atk.nombre}</div>
                   <div className="text-slate-400 font-normal text-[9px]">{atk.efecto}</div>

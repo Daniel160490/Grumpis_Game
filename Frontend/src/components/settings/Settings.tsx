@@ -26,7 +26,7 @@ const SettingRow: React.FC<SettingRowProps> = ({ label, description, children })
 const Settings: React.FC = () => {
   const navigate = useNavigate();
   const username = localStorage.getItem('grumpi_user');
-  
+
   // --- ESTADOS ---
   const [musicVol, setMusicVol] = useState(70);
   const [fastMode, setFastMode] = useState(false);
@@ -94,17 +94,16 @@ const Settings: React.FC = () => {
     setOpeningPack(true);
     let pool = grumpisData;
     if (rarity === 'solaris') pool = grumpisData.filter(g => g.PS > 120);
-    
+
     const randomCard = pool[Math.floor(Math.random() * pool.length)];
 
     try {
-      // Guardar en Backend
       await api.addGrumpitoCollection(username, randomCard.id);
-      
+
       setTimeout(() => {
         setRevealedCard(randomCard);
         setCanOpenToday(false);
-        fetchData(); // Refrescar para activar el contador
+        fetchData();
         if (window.navigator.vibrate) window.navigator.vibrate([100, 50, 300]);
       }, 2000);
     } catch (e) {
@@ -135,7 +134,7 @@ const Settings: React.FC = () => {
                     <p className="text-orange-500 font-bold text-xs mt-1 uppercase italic">{revealedCard.tipo} • PS {revealedCard.PS}</p>
                   </div>
                 </div>
-                <button onClick={() => {setOpeningPack(false); setRevealedCard(null);}} className="mt-10 bg-white text-black px-10 py-3 rounded-full font-black uppercase tracking-widest hover:bg-orange-500 hover:text-white transition-all shadow-lg active:scale-95">Añadir</button>
+                <button onClick={() => { setOpeningPack(false); setRevealedCard(null); }} className="mt-10 bg-white text-black px-10 py-3 rounded-full font-black uppercase tracking-widest hover:bg-orange-500 hover:text-white transition-all shadow-lg active:scale-95">Añadir</button>
               </div>
             )}
           </div>
@@ -157,10 +156,14 @@ const Settings: React.FC = () => {
             <SettingRow label="Música" description="Volumen del sistema">
               <input type="range" value={musicVol} onChange={(e) => setMusicVol(parseInt(e.target.value))} className="w-24 accent-orange-500" />
             </SettingRow>
-            <SettingRow label="Modo Rápido" description="Menos esperas">
+            {/* <SettingRow label="Modo Rápido" description="Menos esperas">
               <button onClick={() => setFastMode(!fastMode)} className={`w-12 h-6 rounded-full border-2 transition-all relative ${fastMode ? 'bg-orange-600 border-orange-700' : 'bg-slate-700 border-slate-800'}`}>
                 <div className={`absolute top-0.5 w-4 h-4 bg-white rounded-full transition-all ${fastMode ? 'left-6.5' : 'left-0.5'}`} />
               </button>
+            </SettingRow> */}
+            <SettingRow label='Instrucciones' description='Instrucciones de la aplicación'>
+              <button onClick={() => navigate('/instructions')}
+                className="bg-slate-800 hover:bg-orange-600 text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase transition-all active:scale-95 border border-slate-700 hover:border-orange-400 shadow-lg">Ver</button>
             </SettingRow>
           </div>
 
@@ -184,7 +187,7 @@ const Settings: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-3">
-              <button 
+              <button
                 disabled={!canOpenToday || (profile?.total_steps || 0) < 500}
                 onClick={() => handleOpenPack('bronce')}
                 className={`group p-3 rounded-2xl border flex items-center gap-4 transition-all ${canOpenToday && (profile?.total_steps || 0) >= 500 ? 'bg-emerald-900/10 border-emerald-500/50 hover:bg-emerald-900/20 active:scale-95 shadow-md' : 'bg-slate-800/20 border-slate-800 opacity-50 grayscale cursor-not-allowed'}`}
@@ -197,7 +200,7 @@ const Settings: React.FC = () => {
                 {canOpenToday && (profile?.total_steps || 0) >= 500 && <div className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />}
               </button>
 
-              <button 
+              <button
                 disabled={!canOpenToday || (profile?.total_steps || 0) < 10000}
                 onClick={() => handleOpenPack('solaris')}
                 className={`relative group p-3 rounded-2xl border flex items-center gap-4 overflow-hidden transition-all ${canOpenToday && (profile?.total_steps || 0) >= 10000 ? 'bg-orange-900/20 border-orange-500/50 hover:border-orange-500 active:scale-95 shadow-md' : 'bg-slate-800/20 border-slate-800 opacity-30 grayscale cursor-not-allowed'}`}
