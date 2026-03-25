@@ -27,15 +27,30 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.options("/{rest_of_path:path}")
-async def preflight_handler(request: Request, rest_of_path: str):
+@app.middleware("http")
+async def cors_handler(request: Request, call_next):
+    # Si es una petición de control (OPTIONS), respondemos nosotros directamente
+    if request.method == "OPTIONS":
+        response = Response()
+        response.status_code = 204
+    else:
+        response = await call_next(request)
+
+    # Lista de orígenes permitidos (asegúrate de que coincidan con tus capturas)
+    allowed_origins = [
+        "http://localhost:5173",
+        "https://grumpis-game.vercel.app",
+        "https://grumpis-game-76es3h3co-danigd71-8388s-projects.vercel.app"
+    ]
+    
     origin = request.headers.get("Origin")
-    response = Response()
-    if origin in origins:
+    if origin in allowed_origins:
         response.headers["Access-Control-Allow-Origin"] = origin
         response.headers["Access-Control-Allow-Credentials"] = "true"
         response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, PATCH, OPTIONS"
-        response.headers["Access-Control-Allow-Headers"] = "*"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With"
+        response.headers["Access-Control-Max-Age"] = "86400"
+
     return response
 
 
