@@ -3,8 +3,9 @@ import schemas
 from database import engine, get_db, Base
 from services import userServices
 from models.user import User
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException, status, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import Response
 
 Base.metadata.create_all(bind=engine)
 
@@ -14,7 +15,7 @@ origins = [
     "http://localhost:5173", 
     "http://127.0.0.1:5173",
     "https://grumpis-game.vercel.app",
-    "grumpis-game-ietsk3pta-danigd71-8388s-projects.vercel.app"
+    "https://grumpis-game-76es3h3co-danigd71-8388s-projects.vercel.app"
 ]
 
 # CONFIGURACIÓN DE CORS
@@ -26,6 +27,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.options("/{rest_of_path:path}")
+async def preflight_handler(request: Request, rest_of_path: str):
+    origin = request.headers.get("Origin")
+    response = Response()
+    if origin in origins:
+        response.headers["Access-Control-Allow-Origin"] = origin
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+        response.headers["Access-Control-Allow-Headers"] = "*"
+    return response
+
+    
 # ENDPOINT DE LOGIN
 @app.post("/login")
 def login(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
