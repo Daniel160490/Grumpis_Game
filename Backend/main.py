@@ -38,7 +38,7 @@ async def preflight_handler(request: Request, rest_of_path: str):
         response.headers["Access-Control-Allow-Headers"] = "*"
     return response
 
-    
+
 # ENDPOINT DE LOGIN
 @app.post("/login")
 def login(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
@@ -51,7 +51,6 @@ def login(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
         )
     
     return user
-
 
 # ENDPOINT REGISTRO
 @app.post("/register", response_model=schemas.UserOut) 
