@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../footer/Footer';
 import { api } from '../../services/api';
-import imagenLogin from '../../assets/Portada Juego Grumpi.png'
+import imagenLogin from '../../assets/logos/Grumpi_TheGameLOGO_BLACK.png'
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
