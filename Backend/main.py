@@ -11,9 +11,9 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 origins = [
-    "http://localhost:5173",    # El puerto por defecto de Vite
+    "http://localhost:5173", 
     "http://127.0.0.1:5173",
-    # Cuando lo subas a Vercel, deberás añadir aquí la URL de tu frontend
+    "https://grumpis-game.vercel.app/"
 ]
 
 # CONFIGURACIÓN DE CORS
