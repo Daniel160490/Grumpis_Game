@@ -1,4 +1,6 @@
-const API_URL = 'http://localhost:8000';
+const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:8000'
+    : 'https://grumpis-game-backend.vercel.app';
 
 export const api = {
     // Registro de nuevo Entrenador
