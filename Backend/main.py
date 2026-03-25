@@ -1,18 +1,19 @@
 from sqlalchemy.orm import Session
 import schemas 
+from fastapi import FastAPI, Depends, HTTPException, status, Request
+from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.orm import Session
+import schemas 
 from database import engine, get_db, Base
 from services import userServices
 from models.user import User
-from fastapi import FastAPI, Depends, HTTPException, status, Request
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import Response
 
-Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
 origins = [
     "http://localhost:5173",
+    "http://127.0.0.1:5173",
     "https://grumpis-game.vercel.app",
     "https://grumpis-game-backend.vercel.app",
     "https://grumpis-game-76es3h3co-danigd71-8388s-projects.vercel.app"
@@ -24,9 +25,14 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-    expose_headers=["*"]
 )
 
+@app.on_event("startup")
+def startup_event():
+    try:
+        Base.metadata.create_all(bind=engine)
+    except Exception as e:
+        print(f"Error conectando a Supabase: {e}")
 
 # ENDPOINT DE LOGIN
 @app.post("/login")
