@@ -22,7 +22,7 @@ const Profile: React.FC = () => {
 
       try {
         const data = await api.getUserCollection(username);
-        
+
         // --- LÓGICA DE LEVEL UP (ANIMACIÓN) ---
         if (lastKnownLevel !== null && data.level > lastKnownLevel) {
           triggerLevelUpEffect();
@@ -74,14 +74,14 @@ const Profile: React.FC = () => {
   const { level = 1, xp = 0, battles_won = 0, battles_lost = 0, total_steps = 0, unlocked_grumpis = [] } = profileData;
   const xpTarget = level * 1000;
   const winRate = (battles_won + battles_lost) > 0 ? ((battles_won / (battles_won + battles_lost)) * 100).toFixed(1) : "0.0";
-  const collectionProgress = ((unlocked_grumpis.length / 160) * 100).toFixed(1);
+  // const collectionProgress = ((unlocked_grumpis.length / 160) * 100).toFixed(1);
 
   return (
     <div className="min-h-screen bg-slate-950 p-6 flex items-center justify-center font-sans text-white relative overflow-hidden select-none">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#020617_70%)] opacity-40" />
 
       <div className="relative z-10 w-full max-w-2xl bg-slate-900/80 backdrop-blur-xl border-2 border-slate-800 rounded-[3rem] shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-8 duration-500">
-        
+
         {/* CABECERA: AVATAR Y XP */}
         <div className="p-8 bg-gradient-to-b from-slate-800/50 to-transparent flex flex-col items-center">
           <div className="relative">
@@ -92,11 +92,11 @@ const Profile: React.FC = () => {
               RANGO NIVEL {level}
             </div>
           </div>
-          
+
           <h1 className="mt-6 text-3xl font-black italic uppercase tracking-tighter text-white">
             {profileData.username}
           </h1>
-          
+
           {/* BARRA DE XP */}
           <div className="w-64 mt-4">
             <div className="flex justify-between text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">
@@ -104,8 +104,8 @@ const Profile: React.FC = () => {
               <span>{xp} / {xpTarget} XP</span>
             </div>
             <div className="w-full h-2 bg-slate-950 rounded-full border border-slate-700 overflow-hidden p-0.5">
-              <div 
-                className="h-full bg-orange-500 rounded-full shadow-[0_0_10px_rgba(234,88,12,0.6)] transition-all duration-1000" 
+              <div
+                className="h-full bg-orange-500 rounded-full shadow-[0_0_10px_rgba(234,88,12,0.6)] transition-all duration-1000"
                 style={{ width: `${Math.min((xp / xpTarget) * 100, 100)}%` }}
               />
             </div>
@@ -145,21 +145,21 @@ const Profile: React.FC = () => {
           {/* GRUMPI COMPAÑERO */}
           <div className="col-span-2 bg-slate-950/50 border border-slate-800 p-4 rounded-3xl flex items-center gap-6 group hover:border-orange-500/30 transition-all">
             <div className="relative w-20 h-28 bg-slate-900 rounded-xl border-2 border-slate-700 overflow-hidden shrink-0 shadow-lg group-hover:scale-105 transition-transform">
-               {favoriteGrumpi ? (
-                 <>
-                   <img src={favoriteGrumpi.img_general} className="w-full h-full object-cover" alt="favorite" />
-                   <div className="absolute inset-0 bg-gradient-to-tr from-orange-500/20 via-transparent to-white/10" />
-                 </>
-               ) : (
-                 <div className="w-full h-full flex items-center justify-center text-slate-800 text-3xl font-black">?</div>
-               )}
+              {favoriteGrumpi ? (
+                <>
+                  <img src={favoriteGrumpi.img_general} className="w-full h-full object-cover" alt="favorite" />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-orange-500/20 via-transparent to-white/10" />
+                </>
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-slate-800 text-3xl font-black">?</div>
+              )}
             </div>
             <div className="flex-1">
               <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1 italic">Grumpi Compañero</h4>
               <p className="text-xl font-black text-white uppercase italic tracking-tighter">
                 {favoriteGrumpi ? favoriteGrumpi.nombre : "Sin Seleccionar"}
               </p>
-              <button 
+              <button
                 onClick={() => navigate('/library')}
                 className="mt-2 text-[10px] font-black text-orange-500 border border-orange-500/30 px-3 py-1 rounded-lg uppercase hover:bg-orange-500 hover:text-white transition-all"
               >

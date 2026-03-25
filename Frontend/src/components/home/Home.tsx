@@ -10,7 +10,7 @@ interface MenuOption {
   label: string;
   path: string;
   icon: string;
-  isExit?: boolean; 
+  isExit?: boolean;
 }
 
 const Home: React.FC = () => {
@@ -21,7 +21,7 @@ const Home: React.FC = () => {
   const [openingPack, setOpeningPack] = useState(false);
   const [revealedCard, setRevealedCard] = useState<Grumpi | null>(null);
   const [userName, setUserName] = useState('Entrenador');
-  const [profile, setProfile] = useState<any>(null);
+  const [setProfile] = useState<any>(null);
 
   const username = localStorage.getItem('grumpi_user');
 
@@ -65,11 +65,11 @@ const Home: React.FC = () => {
     setOpeningPack(true);
 
     const randomGrumpi = grumpisData[Math.floor(Math.random() * grumpisData.length)];
-    
+
     try {
       // Sincronizamos la nueva carta con el Backend
       await api.addGrumpitoCollection(username!, randomGrumpi.id);
-      
+
       setTimeout(() => {
         setRevealedCard(randomGrumpi);
         if (window.navigator.vibrate) window.navigator.vibrate([100, 50, 300]);
@@ -81,8 +81,8 @@ const Home: React.FC = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('grumpi_user'); 
-    navigate('/login'); 
+    localStorage.removeItem('grumpi_user');
+    navigate('/login');
   };
 
   const handleMenuClick = (option: MenuOption) => {
@@ -103,13 +103,13 @@ const Home: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-6 select-none relative overflow-hidden">
-      
+
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#020617_70%)] opacity-40" />
 
       {/* --- NOTIFICACIÓN EMERGENTE --- */}
       {showNotification && (
         <div className="fixed top-8 left-1/2 -translate-x-1/2 z-[60] w-full max-w-sm px-4 animate-in slide-in-from-top-10 duration-500">
-          <button 
+          <button
             onClick={handleOpenFromHome}
             className="w-full bg-emerald-600 border-2 border-emerald-400 p-4 rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.4)] flex items-center gap-4 group transition-transform active:scale-95"
           >
@@ -141,8 +141,8 @@ const Home: React.FC = () => {
                     <p className="text-orange-500 font-bold text-xs mt-1 uppercase italic">{revealedCard.tipo} • PS {revealedCard.PS}</p>
                   </div>
                 </div>
-                <button 
-                  onClick={() => {setOpeningPack(false); setRevealedCard(null);}} 
+                <button
+                  onClick={() => { setOpeningPack(false); setRevealedCard(null); }}
                   className="mt-10 bg-white text-black px-12 py-4 rounded-full font-black uppercase tracking-widest hover:bg-orange-500 hover:text-white transition-all active:scale-95 shadow-xl"
                 >
                   Aceptar
@@ -172,8 +172,8 @@ const Home: React.FC = () => {
             className={`
               relative overflow-hidden group w-full py-5 px-8 rounded-2xl text-xl font-bold 
               transition-all duration-300 flex items-center justify-between
-              ${option.isExit 
-                ? 'bg-transparent border-2 border-red-900/50 text-red-500 hover:bg-red-600/10 hover:border-red-500' 
+              ${option.isExit
+                ? 'bg-transparent border-2 border-red-900/50 text-red-500 hover:bg-red-600/10 hover:border-red-500'
                 : 'bg-slate-900 border-2 border-slate-800 text-slate-100 hover:border-orange-500 hover:-translate-y-1 hover:shadow-[0_10px_25px_-10px_rgba(234,88,12,0.3)]'
               }
             `}
